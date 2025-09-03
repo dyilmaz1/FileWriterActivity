@@ -1,6 +1,6 @@
 import java.io.*;
-import java.nio.file.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
 
 public class MyFileWriter {
     public static void main(String[] args) {
@@ -10,6 +10,9 @@ public class MyFileWriter {
         String fileName3 = "example3.txt";
         String fileName4 = "example4.txt";
         String fileName5 = "example5.txt";
+
+        makeHiddenFile();
+        makeFileInHiddenFolder();
 
         // 1. Using FileWriter
         try (FileWriter writer = new FileWriter(fileName1)) {
@@ -42,6 +45,26 @@ public class MyFileWriter {
         // 5. Using Files (java.nio.file)
         try {
             Files.write(Paths.get(fileName5), data.getBytes(StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void makeHiddenFile() {
+        String fileName = ".password.txt";
+        String password = "mypasswordis1234";
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(fileName))) {
+            bufferedWriter.write(password);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void makeFileInHiddenFolder() {
+        String fileName = "confidential.txt";
+        String password = "mypasswordis1234";
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(".classified/" + fileName))) {
+            bufferedWriter.write(password);
         } catch (IOException e) {
             e.printStackTrace();
         }
