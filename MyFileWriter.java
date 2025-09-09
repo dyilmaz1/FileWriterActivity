@@ -76,4 +76,19 @@ public class MyFileWriter {
         File file = new File(fileName);
         System.out.println("File size of " + fileName + ": " + file.length() + " bytes");
     }
+
+    private static String toString(String fileName) {
+        StringBuilder content = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line = reader.readLine();
+            while (line != null) {
+                content.append(line);
+                content.append("\n");
+                line = reader.readLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return content.toString();
+    }
 }
