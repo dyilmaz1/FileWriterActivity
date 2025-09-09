@@ -13,6 +13,7 @@ public class MyFileWriter {
 
         makeHiddenFile();
         makeFileInHiddenFolder();
+        printFileSize(fileName5);
 
         // 1. Using FileWriter
         try (FileWriter writer = new FileWriter(fileName1)) {
@@ -68,5 +69,11 @@ public class MyFileWriter {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    // Calculate and print the file size using the File class
+    private static void printFileSize(String fileName) {
+        File file = new File(fileName);
+        System.out.println("File size of " + fileName + ": " + file.length() + " bytes");
     }
 }
