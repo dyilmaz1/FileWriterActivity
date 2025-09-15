@@ -49,6 +49,8 @@ public class MyFileWriter {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        printFileSize(fileName1);
     }
 
     public static void makeHiddenFile() {
@@ -72,10 +74,16 @@ public class MyFileWriter {
     }
 
     // Calculate and print the file size using the File class
-    private static void printFileSize(String fileName) {
+    private static void printFileSize(String... fileNames) {
+    long totalSize = 0;
+    for (String fileName : fileNames) {
         File file = new File(fileName);
-        System.out.println("File size of " + fileName + ": " + file.length() + " bytes");
+        if (file.exists()) {
+            totalSize += file.length();
+        }
     }
+    System.out.println("Total size of all files: " + totalSize + " bytes");
+}
 
     private static String toString(String fileName) {
         StringBuilder content = new StringBuilder();
