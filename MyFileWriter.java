@@ -1,6 +1,9 @@
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
+import java.security.DigestInputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class MyFileWriter {
     public static void main(String[] args) {
@@ -75,15 +78,15 @@ public class MyFileWriter {
 
     // Calculate and print the file size using the File class
     private static void printFileSize(String... fileNames) {
-    long totalSize = 0;
-    for (String fileName : fileNames) {
-        File file = new File(fileName);
-        if (file.exists()) {
-            totalSize += file.length();
+        long totalSize = 0;
+        for (String fileName : fileNames) {
+            File file = new File(fileName);
+            if (file.exists()) {
+                totalSize += file.length();
+            }
         }
+        System.out.println("Total size of all files: " + totalSize + " bytes");
     }
-    System.out.println("Total size of all files: " + totalSize + " bytes");
-}
 
     private static String toString(String fileName) {
         StringBuilder content = new StringBuilder();
@@ -99,4 +102,28 @@ public class MyFileWriter {
         }
         return content.toString();
     }
+
+    public static String hashFile(String filePath) throws IOException, NoSuchAlgorithmException {
+        MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
+        try (InputStream in = Files.newInputStream(Path.of(filePath));
+            DigestInputStream din = new DigestInputStream(in, sha256)) {
+
+            byte[] buffer = new byte[8192];
+            while (din.read(buffer) != -1) {
+                
+            }
+        }
+        byte[] digest = sha256.digest();
+
+        StringBuilder hexString = new StringBuilder(digest.length * 2);
+        for (byte b : digest) {
+            String hex = Integer.toHexString(0xff & b);
+            if (hex.length() == 1) {
+                hexString.append('0');
+            }
+            hexString.append(hex);
+        }
+        return hexString.toString();
+    }
+
 }
