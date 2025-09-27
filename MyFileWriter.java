@@ -104,13 +104,30 @@ public class MyFileWriter {
     }
 
     public static String hashFile(String filePath) throws IOException, NoSuchAlgorithmException {
+
+        if (filePath == null || filePath.isBlank()) {
+            throw new IllegalArgumentException("filePath must be a non-empty string");
+        }
+
+        Path p = Paths.get(filePath);
+        if (!Files.exists(p)) {
+            throw new FileNotFoundException("File not found: " + filePath);
+        }
+        if (!Files.isRegularFile(p)) {
+            throw new IOException("Not a regular file: " + filePath);
+        }
+        if (!Files.isReadable(p)) {
+            throw new IOException("File is not readable: " + filePath);
+        }
+
+
         MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
         try (InputStream in = Files.newInputStream(Path.of(filePath));
             DigestInputStream din = new DigestInputStream(in, sha256)) {
 
             byte[] buffer = new byte[8192];
             while (din.read(buffer) != -1) {
-                
+
             }
         }
         byte[] digest = sha256.digest();
